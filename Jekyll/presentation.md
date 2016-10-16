@@ -197,7 +197,7 @@ class: middle
 ```
 
 ---
-class: center, middle
+class: middle
 
 # Create named folders in root with `index` files in them.
 
@@ -310,5 +310,35 @@ class: center, middle
 # Plugins
 
 ### Create custom generated content using your own code, but `gihub-pages` doesn't support plugins, so it falls out of context here.
+
 ---
 class: center, middle
+
+# Day 3
+## Github
+
+---
+class: center, middle
+
+`gem 'github-pages'`
+
+---
+class: center, middle
+
+# User and Organization Pages
+
+???
+* username.github.io
+* username.github.io/project - gh-pages
+
+---
+class: middle
+
+Use `site.github.url` wherever you are creating URLs
+
+```
+<!-- Useful for styles with static names... -->
+<link href="{{ site.github.url }}/path/to/css.css" rel="stylesheet">
+<!-- and for documents/pages whose URL's can change... -->
+<a href="{{ page.url | prepend: site.github.url }}">{{ page.title }}</a>
+```
