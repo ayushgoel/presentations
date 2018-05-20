@@ -6,22 +6,6 @@ class: center, middle, inverse
 ---
 
 .left-column[
- ### Prerequisite
-]
-.right-column[
-  * mit-scheme installed?
-]
---
-
-.right-column[
-  * Some topics would require hands-on exercises.
-
-     We will be doing a [roulette spin](http://wheeldecide.com/index.php?c1=Ayush&time=5) to decide who is going to do it on projector.
-]
-
----
-
-.left-column[
 ### Disclaimer
 ]
 .right-column[
@@ -214,12 +198,44 @@ Any “mutating” operations copy the value, change it and pass back the change
 
 .right-column[
 * Functions that don't change output based on environment.
-  * You can also think of them as functions with no side effects. A function has some side effect if it modifies state outside its scope or has observable interaction with outside world.
-* Eg:
-  - ```
-      (define (mult2 x) (* 2 x))
-    ```
+]
+--
+
+.right-column[
+* You can also think of them as functions with no side effects.
+
+  A function has some side effect if it modifies state outside its scope or has observable interaction with outside world.
+]
+--
+
+.right-column[
 * Think of them as mathematical functions instead of computational.
+]
+
+---
+
+.left-column[
+### Pure functions
+]
+
+.right-column[
+
+```
+(define (mult2 x)
+  (* 2 x))
+```
+----
+```python
+a = 0
+def increment():
+  global a
+    a += 1
+```
+``` python
+def increment(a):
+  return a + 1
+
+```
 ]
 
 ---
@@ -289,3 +305,29 @@ class: center, middle, inverse
 # Day 2
 
 ---
+
+.left-column[
+ ### Prerequisite
+]
+.right-column[
+  * mit-scheme installed?
+]
+--
+
+.right-column[
+  * Some topics would require hands-on exercises.
+
+     We will be doing a [roulette spin](http://wheeldecide.com/?c1=Sukhmeet&c2=Paras&c3=Kunjan&c4=Prashant&time=5) to decide who is going to do it on projector.
+]
+
+---
+
+.left-column[
+ ### Code
+]
+.right-column[
+* Mostly, recursion will solve everything
+* Try and think about functions as first class functions i.e. they can be passed around and treated just like variables.
+* Scheme doesn't allow having state (it kinda does, but we will ignore that part). It will take some time to get your head around it.
+*
+]
