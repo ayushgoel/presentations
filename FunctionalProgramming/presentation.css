@@ -6,8 +6,16 @@
   color: #fa0000;
 }
 
+.dark-gray {
+  color: dimgray;
+}
+
 .large {
   font-size: 2em;
+}
+
+.small {
+  font-size: 0.75em;
 }
 
 .bold {
@@ -100,6 +108,7 @@ code {
 
 .remark-code, .remark-inline-code {
   font-family: 'Ubuntu Mono';
+  padding: 0.2em;
 }
 
 .remark-code-line-highlighted {

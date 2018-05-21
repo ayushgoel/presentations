@@ -1,0 +1,82 @@
+(cdr '((1 2) (2 3 4)))
+(car (cdr '((1 2) (2 3 4))))
+(cdr (car (cdr '((1 2) (2 3 4)))))
+
+(cdr '(1 2 3 4 5 6))
+
+
+(define (smallest-divisor n)
+  (find-divisor n 2))
+(define (find-divisor n test-divisor)
+  (cond ((> (square test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (+ test-divisor 1)))))
+(define (divides? a b)
+  (= (remainder b a) 0))
+
+(smallest-divisor 11)
+(smallest-divisor 31)
+
+
+(define (maxt a b)
+  (if (> a b)
+      a
+      b))
+(maxt -2 -2)
+
+(define prepend cons)
+(prepend 2 '(0 1))
+
+(define (append x arr)
+  (cond ((null? arr) (list x)) ; https://stackoverflow.com/questions/34984552/what-is-the-difference-between-quote-and-list
+        (else (cons (car arr) (append x (cdr arr))))
+  )
+)
+(append 2 '())
+(append 2 '(1))
+(append 2 '(0 1))
+
+(define (length arr)
+  (if (null? arr)
+      0
+      (+ 1 (length (cdr arr)))))
+
+(length '())
+(length '(1))
+(length '(0 1))
+
+
+(define (reverse-helper arr acc)
+  (if (null? arr)
+      acc
+      (reverse-helper (cdr arr) (list (car arr) acc))))
+
+(define (reverse arr)
+  (reverse-helper arr '()))
+
+(reverse '(0 1))
+(reverse '(0 1 2 3 4))
+
+(define (zip arr1 arr2)
+  (if (or (null? arr1) (null? arr2))
+      '()
+      (cons (cons (car arr1) (car arr2)) (zip (cdr arr1) (cdr arr2)))
+))
+
+(zip '(1 2) '(4 5)) ; -> '((1 4) (2 5))
+(zip '(1 2) '(4 5 6)) ; -> '((1 4) (2 5))
+
+
+(define (simpson-integral f a b n)
+  (define (h) (/ (- b a) n))
+  (define (y k) (f (+ a (* k (h)))))
+  (define (sum i n crntsum)
+    (cond ((= i 0) (sum 1 n (y i)))
+          ((= i n) (+ crntsum (y i)))
+          ((even? i) (sum (+ i 1) n (+ crntsum (* 2 (y i)))))
+          (else (sum (+ i 1) n (+ crntsum (* 4 (y i)))))))
+  (* (/ (h) 3)
+     (sum 0 n 0))
+  )
+(define (cube x) (* x x x))
+(simpson-integral cube 0 1 10)

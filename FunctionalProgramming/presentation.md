@@ -14,7 +14,7 @@ class: center, middle, inverse
 ]
 
 ---
-class: center, middle, inverse
+
 
 # Day 1
 
@@ -321,13 +321,354 @@ class: center, middle, inverse
 ]
 
 ---
+class: middle
 
 .left-column[
  ### Code
 ]
+
 .right-column[
 * Mostly, recursion will solve everything
-* Try and think about functions as first class functions i.e. they can be passed around and treated just like variables.
-* Scheme doesn't allow having state (it kinda does, but we will ignore that part). It will take some time to get your head around it.
-*
 ]
+--
+.right-column[
+* Try and think about functions as first class functions i.e. they can be passed around and treated just like variables.
+]
+--
+.right-column[
+* Scheme doesn't allow having state (it kinda does, but we will ignore that part). It will take some time to get your head around it.
+]
+
+---
+
+## Identity
+
+#### (idn 2) -> 2
+
+--
+
+```scheme
+(define (idn x) x)
+```
+
+---
+
+## Max/Min
+
+#### (max 2 3) -> 3
+#### (min 2 3) -> 2
+
+.small.dark-gray[consider only two arguments]
+
+--
+
+```scheme
+(define (max a b)
+  (if (> a b)
+      a
+      b))
+
+> (max -2 -5) ; -2
+```
+
+---
+
+## Prepend
+
+#### (prepend 2 '(0 1)) -> (2 0 1)
+
+--
+
+```scheme
+(define prepend cons)
+
+> (prepend 2 '(0 1));  (2 0 1)
+```
+
+---
+
+## Append
+
+#### (append 2 '(0 1)) -> (0 1 2)
+
+.footnote.small[What is difference between [quote-and-list](https://stackoverflow.com/questions/34984552/what-is-the-difference-between-quote-and-list)]
+--
+
+```scheme
+(define (append x arr)
+  (cond ((null? arr)
+            (list x)) ; check footnote
+        (else (cons
+                (car arr)
+                (append x (cdr arr))))
+  )
+)
+
+(append 2 '())
+(append 2 '(1))
+(append 2 '(0 1))
+
+```
+
+---
+
+## Length of list
+
+#### (length '(1 2 3 4)) -> 4
+
+--
+
+```scheme
+(define (length arr)
+  (if (null? arr)
+      0
+      (+ 1 (length (cdr arr)))))
+
+(length '())
+(length '(1))
+(length '(0 1))
+```
+
+---
+
+## Reverse a list
+
+#### (reverse '(0 1)) -> (1 0)
+
+.small.dark-gray[Remember to handle the null at end of list]
+
+--
+
+```scheme
+(define (reverse-helper arr acc)
+  (if (null? arr)
+      acc
+      (reverse-helper ; Notice how this is tail recursive
+        (cdr arr)
+        (cons (car arr)
+              acc)
+      )
+  )
+)
+
+(define (reverse arr)
+  (reverse-helper arr '()))
+
+(reverse '(0 1))
+(reverse '(0 1 2 3 4))
+```
+
+---
+
+## Zip 2 lists
+
+#### (zip '(1 2) '(4 5)) -> '((1 4) (2 5))
+
+--
+
+```scheme
+(define (zip arr1 arr2)
+  (if (or (null? arr1) (null? arr2))
+      '()
+      (list (list (car arr1) (car arr2)) (zip (cdr arr1) (cdr arr2)))
+))
+```
+
+---
+
+## Simposon's rule for integration
+
+#### The integral of a function `f` between a and b is approximated as
+
+.left[![Simposon's Rule](simpson-rule.png)]
+
+--
+
+```scheme
+(define (simpson-integral f a b n)
+  (define (h) (/ (- b a) n))
+  (define (y k) (f (+ a (* k (h)))))
+  (define (sum i n crntsum)
+    (cond ((= i 0) (sum 1 n (y i)))
+          ((= i n) (+ crntsum (y i)))
+          ((even? i) (sum (+ i 1) n (+ crntsum (* 2 (y i)))))
+          (else (sum (+ i 1) n (+ crntsum (* 4 (y i)))))))
+  (* (/ (h) 3)
+     (sum 0 n 0))
+  )
+(define (cube x) (* x x x))
+(simpson-integral cube 0 1 10)
+```
+
+---
+
+class: center, middle, inverse
+
+## Higher Order Functions
+
+---
+
+## Map
+
+#### Given a list create another list with function `f` applied to all elements
+
+--
+
+```scheme
+(define (mapx f arr)
+  (if (null? arr)
+      '()
+      (cons (f (car arr))
+            (mapx f (cdr arr)))
+  )
+)
+
+(define (add2 x) (+ x 2))
+(mapx add2 (cons 2 '()))
+(mapx add2 (cons 2 (cons 3 '())))
+```
+
+---
+
+## Filter
+
+#### Given a list L create another list with elements from L only if `f` returns `#t` for it
+
+--
+
+```scheme
+(define (filterx f arr)
+  (if (null? arr)
+    '()
+    (if (f (car arr))
+      (cons (car arr) (filterx f (cdr arr)))
+      (filterx f (cdr arr))
+    )
+  )
+)
+
+(filterx even? (cons 1 (cons 2 (cons 3 (cons 4 '())))))
+(filterx even? '(1 2 4 5 3 6 8 7 9 1212))
+
+```
+
+---
+
+## Reduce/ foldl
+
+#### Applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value.
+
+(reduce + 0 '(1 2 3)) -> 6
+
+--
+
+```scheme
+(define (reducex initial f arr)
+  (if (null? arr)
+      initial
+      (reducex (f initial (car arr)) f (cdr arr))))
+
+(define (a3 ini val) (+ ini val))
+(reducex 0 a3 (cons 2 (cons 3 '())))
+(reducex 10 a3 (cons 2 (cons 3 '())))
+(reducex 0 - '(1 2 3))
+```
+
+.footnote.red[There are 4 variations of fold. 2 with going from left to right. 2 with `f` taking accumulator as first value or second.]
+
+---
+
+## Pipelining
+
+#### Just like `fold`, but instead a list of functions is passed in. A single value is passed to each function to derive a single value.
+
+(define (mul2 x) (* 2))
+(pipeline '(abs mul2) -2) -> 4
+
+--
+
+```scheme
+(define (pipelinex funcs x)
+  (if (null? funcs)
+    x
+    (pipelinex (cdr funcs) ((car funcs) x))
+  )
+)
+
+(define (mult2 x)
+  (* x 2))
+(pipelinex (cons abs (cons mult2 '())) 2)
+(pipelinex (cons abs (cons mult2 '())) -2)
+```
+
+---
+
+## Compose
+
+#### Given a list of functions, create a function that is a composition of all the functions given in order
+
+--
+
+```scheme
+(define (composex funcs)
+  (lambda (x)
+    (reducex '() (lambda (ini f) (f x))
+      funcs)
+  )
+)
+
+(define absmult2 (composex (cons abst (cons mult2 '()))))
+(absmult2 2)
+(absmult2 -2)
+```
+
+---
+
+## Currying
+
+#### Given a function `f` with n parameters, a curried function `f'` would do the same work with (n-1) parameters.
+
+Think of this as adding state to functions.
+
+```swift
+func add(a: Int, b: Int) -> Int {
+  return a + b
+}
+
+func add(a: Int)(b: Int) -> Int { // curried
+  return a + b
+}
+let addTwo = add(2)
+```
+
+---
+
+## Currying
+
+#### Given a function `f` with n parameters, a curried function `f'` would do the same work with (n-1) parameters.
+
+Think of this as adding state to functions.
+
+```scheme
+(define curry2
+  (lambda (f)
+    (lambda (arg1)
+     (lambda (arg2)
+       (f arg1 arg2)))
+  ))
+(define addTwoNums (curry2 +))
+(define add2 (addTwoNums 2))
+(add2 3)
+```
+
+---
+class: center, middle, inverse
+
+# Day 3
+
+---
+class: center, middle, inverse
+
+##[Are we there yet?](http://www.infoq.com/presentations/Are-We-There-Yet-Rich-Hickey)
+
+Rich Hickey, creator of Clojure
