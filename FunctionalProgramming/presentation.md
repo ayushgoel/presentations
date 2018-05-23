@@ -14,7 +14,7 @@ class: center, middle, inverse
 ]
 
 ---
-
+class: center, middle, inverse
 
 # Day 1
 
