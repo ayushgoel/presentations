@@ -317,11 +317,10 @@ class: center, middle, inverse
 .right-column[
   * Some topics would require hands-on exercises.
 
-     We will be doing a [roulette spin](http://wheeldecide.com/?c1=Sukhmeet&c2=Paras&c3=Kunjan&c4=Prashant&time=5) to decide who is going to do it on projector.
+     We will be doing a [roulette spin](http://wheeldecide.com/index.php?c1=Pratyush&c2=Prashant&c3=Imamudin&t=Who+solves+this%21&time=5) to decide who is going to do it on projector.
 ]
 
 ---
-class: middle
 
 .left-column[
  ### Code
@@ -330,13 +329,25 @@ class: middle
 .right-column[
 * Mostly, recursion will solve everything
 ]
+
 --
 .right-column[
 * Try and think about functions as first class functions i.e. they can be passed around and treated just like variables.
 ]
+
 --
 .right-column[
 * Scheme doesn't allow having state (it kinda does, but we will ignore that part). It will take some time to get your head around it.
+]
+
+--
+.right-column[
+* Use the reference when in doubt
+]
+
+--
+.right-column[
+* It is easy!
 ]
 
 ---
@@ -349,6 +360,12 @@ class: middle
 
 ```scheme
 (define (idn x) x)
+```
+
+```scheme
+(define (idn x)
+  x
+)
 ```
 
 ---
@@ -479,6 +496,10 @@ class: middle
 ## Simposon's rule for integration
 
 #### The integral of a function `f` between a and b is approximated as
+```
+ h = (b - a)/n
+ y(k) = f(a + kh)
+```
 
 .left[![Simposon's Rule](simpson-rule.png)]
 
@@ -638,6 +659,7 @@ func add(a: Int, b: Int) -> Int {
 func add(a: Int)(b: Int) -> Int { // curried
   return a + b
 }
+
 let addTwo = add(2)
 ```
 
@@ -662,6 +684,14 @@ Think of this as adding state to functions.
 ```
 
 ---
+
+##  What to do on last day?
+
+1. More of programming exercises
+2. A talk that defines the requirement of going functional in the face of OOP based languages by Rich Hickey.
+
+---
+
 class: center, middle, inverse
 
 # Day 3
