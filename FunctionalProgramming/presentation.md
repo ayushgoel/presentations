@@ -702,3 +702,69 @@ class: center, middle, inverse
 ##[Are we there yet?](http://www.infoq.com/presentations/Are-We-There-Yet-Rich-Hickey)
 
 Rich Hickey, creator of Clojure
+
+---
+class: center, middle, inverse
+
+## Before closing....
+
+---
+
+.left-column[
+###  Interested in more?
+]
+
+.right-column[
+1. I can have a future advanced session which has data abstractions, benefits and costs of assignment, streams and more examples.
+2. We can start a group for reading and solving exercises of SICP
+]
+
+.footnote.red[None of this is required, I am just saying this because I have to...]
+
+---
+class: center, middle
+
+## Praise the lord!
+
+--
+
+#### and me...
+
+--
+
+##### because appraisals aren't far 😉
+
+![Money](https://media0.giphy.com/media/uyWTOgNGGWfks/giphy.gif)
+
+---
+
+class: center, middle
+
+## Share your feedback!
+# 🙏
+Write to me or catch me where you see me.
+
+.red[\#please]
+
+---
+
+class: center, middle
+
+### Let me know in case you ACTUALLY go and use this stuff!
+
+
+![Mind Blown](https://media2.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif)
+
+---
+class: center, middle
+
+### This presentation is available on
+#### https://github.com/ayushgoel/presentations/tree/master/FunctionalProgramming
+
+---
+
+class: center, middle, inverse
+
+# Thank you!
+
+### I couldn't have hoped for a better audience. You people are awesome.
