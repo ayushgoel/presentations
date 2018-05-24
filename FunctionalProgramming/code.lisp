@@ -105,3 +105,52 @@
 (define addTwoNums (curry2 +))
 (define add2 (addTwoNums 2))
 (add2 3)
+
+(define (reverse-helper arr acc)
+  (if (null? arr)
+      acc
+      (reverse-helper ; Notice how this is tail recursive
+        (cdr arr)
+        (cons (car arr)
+              acc)
+      )
+  )
+)
+
+(define (reverse arr)
+  (reverse-helper arr '()))
+(reverse '(0 1))
+(reverse '(0 1 2 3 4))
+
+
+
+(define (simpson-integral f a b n)
+  (define (h) (/ (- b a) n))
+  (define (y k) (f (+ a (* k (h)))))
+  (define (sum i n crntsum)
+    (cond ((= i 0) (sum 1 n (y i)))
+          ((= i n) (+ crntsum (y i)))
+          ((even? i) (sum (+ i 1) n (+ crntsum (* 2 (y i)))))
+          (else (sum (+ i 1) n (+ crntsum (* 4 (y i)))))))
+
+  (* (/ (h) 3)
+     (sum 0 n 0))
+)
+
+(define (cube x) (* x x x))
+(define (square x) (* x x))
+(simpson-integral square 0 1 10)
+
+(define (simpson-integral f a b n)
+  (define (h) (/ (- b a) n))
+  (define (y k) (f (+ a (* k (h)))))
+  (define (sum i crntsum)
+    (cond ((= i 0) (sum 1 (y i)))
+          ((= i n) (+ crntsum (y i)))
+          ((even? i) (sum (+ i 1) (+ crntsum (* 2 (y i)))))
+          (else (sum (+ i 1) (+ crntsum (* 4 (y i)))))))
+  (* (/ (h) 3)
+     (sum 0 0))
+  )
+(define (cube x) (* x x x))
+(simpson-integral cube 0 1 10)
