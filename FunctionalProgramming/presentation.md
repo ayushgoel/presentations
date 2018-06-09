@@ -282,6 +282,58 @@ def increment(a):
 
 ---
 
+.left-column[
+### Ease in Testing
+]
+
+.right-column[
+#### Example
+
+from: [QuickCheck manual](http://www.cse.chalmers.se/~rjmh/QuickCheck/manual.html)
+
+QuickCheck is a tool for testing Haskell programs automatically.
+
+* The programmer provides a specification of the program
+* QuickCheck then tests that the properties hold in a large number of randomly generated cases
+
+]
+
+---
+
+.right-column[
+
+A simple example of a property definition is
+
+```
+prop_RevRev xs = reverse (reverse xs) == xs
+  where types = xs::[Int]
+```
+
+To check the property, we load this definition in to hugs and then invoke
+
+```
+Main> quickCheck prop_RevRev
+OK, passed 100 tests.
+```
+
+When a property fails, QuickCheck displays a counter-example. For example, if we define
+
+```
+prop_RevId xs = reverse xs == xs
+  where types = xs::[Int]
+```
+
+then checking it results in
+
+```
+Main> quickCheck prop_RevId
+Falsifiable, after 1 tests:
+[-3,15]
+```
+]
+
+---
+
 class: center
 
 #### Functional code is characterised by one thing:
