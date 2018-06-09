@@ -27,7 +27,9 @@ class: center, middle, inverse
 --
 
 .right-column[
-* Wiki - Functional programming is a programming paradigm — a style of building the structure and elements of computer programs — that treats computation as the evaluation of mathematical functions and avoids changing-state and mutable data.
+###Wiki
+
+> Functional programming is a programming paradigm — a style of building the structure and elements of computer programs — that treats computation as the evaluation of mathematical functions and avoids changing-state and mutable data.
 ]
 
 --
@@ -116,7 +118,13 @@ class: center, middle, inverse
 --
 
 .right-column[
-* There are only two hard things in Computer Science: cache invalidation and naming things. -- Phil Karlton
+> There are only two hard things in Computer Science: cache invalidation and naming things. -- Phil Karlton
+
+]
+
+--
+
+.right-column[
 * In our example of Vehicle, The petrol tank has a sensor of the actual amount of petrol in the vehicle. That is the true value of petrol.
 * To map the real world in our objects, we have cached the value of petrol (For easier and faster access) in our class object.
 ]
