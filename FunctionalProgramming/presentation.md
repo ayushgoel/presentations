@@ -275,6 +275,51 @@ def increment(a):
 ---
 
 .left-column[
+### Tail call optimisation
+]
+
+.right-column[
+Tail-call optimization (or tail-call merging or tail-call elimination) is a generalization of TailRecursion:
+
+> If the last thing a routine does before it returns is call another routine, rather than doing a jump-and-add-stack-frame immediately followed by a pop-stack-frame-and-return-to-caller, it should be safe to simply jump to the start of the second routine, letting it re-use the first routine's stack frame (environment).
+
+![Functions call](http://billhails.net/Book/images/tail-no-tco.png)
+![Functions call with TCO](http://billhails.net/Book/images/tail-with-tco.png)
+
+]
+
+---
+
+.left-column[
+### Tail call optimisation
+]
+
+.right-column[
+
+###Non tail recursive
+
+```scheme
+(define (factorial x)
+  (if (zero? x)
+    1
+    (* x (factorial (- x 1))))
+```
+
+###Tail recursive
+
+```scheme
+(define (factorial x acc)
+  (if (zero? x)
+    acc
+    (factorial (sub1 x)
+               (* x acc))))
+```
+
+]
+
+---
+
+.left-column[
 ### Advantages of Functional Programming
 ]
 
