@@ -394,7 +394,7 @@ class: center, middle, inverse
 
 --
 .right-column[
-* Use the reference when in doubt
+* Use the [reference](http://www.nada.kth.se/kurser/su/DA2001/sudata16/examination/schemeCheatsheet.pdf) when in doubt
 ]
 
 --
