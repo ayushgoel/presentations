@@ -334,6 +334,45 @@ Falsifiable, after 1 tests:
 
 ---
 
+.left-column[
+### Declarative Thinking
+]
+
+.right-column[
+
+> Declarative programming is writing code in a way that describes what you want to do and not how you want to do it.
+
+In essence it's just writing your code top down instead of bottom up.
+
+.red[Do Wishful Thinking]
+]
+
+---
+
+.left-column[
+### Declarative Thinking
+]
+
+.right-column[
+
+Imagine writing a function for `f(x) = 2*x + x^2`
+
+```text
+         f(x)
+          ^
+          |
+    +---> + <---+
+    +           +
+Double(x)    Square(x)
+```
+
+#### Declarative thinking is all about writing `f(x)` before `Double` and `Square`
+
+Just wish that they exist..
+]
+
+---
+
 class: center
 
 #### Functional code is characterised by one thing:
