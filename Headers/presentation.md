@@ -15,11 +15,7 @@ class: center, middle, inverse
 
 --
 .right-column[
-* You use the preprocessing directive `#include` to use
-]
-
---
-.right-column[
+* You use the preprocessing directive `#include`
 ]
 
 ---
@@ -60,18 +56,6 @@ Check
 ```
 Where ever you have put your Flock project
 ```
-]
-
----
-
-.left-column[
-## Advantages
-]
-
-.right-column[
-* Including a header has same effect as copy-pasting the contents on top of file that includes it.
-  - If done by hand, it is error prone and laborious
-* Single place to edit and fix
 ]
 
 ---
@@ -250,9 +234,83 @@ To add additional directories use `-I` command line option.
 _dir_ to be searched after the current directory (for the quote form of the directive) and ahead of the standard system directories.
 
 Use `-iquote` and `-isystem` instead of `-I` to get separate control over the search paths.
+
+You can also prevent the preprocessor from searching any of the default system header directories with the `-nostdinc` option.
 ]
 
 ---
+
+.left-column[
+## Once-Only Headers
+]
+
+.right-column[
+
+If a header is included twice, compiler will process it's contents twice.
+
+]
+
+--
+
+.right-column[
+
+### wrapper #ifndef
+
+```
+/* File foo.  */
+#ifndef FILE_FOO_SEEN
+#define FILE_FOO_SEEN
+
+the entire file
+
+#endif /* !FILE_FOO_SEEN */
+```
+
+]
+
+.footnote.small[The macro `FILE_FOO_SEEN` is called the .red[**controlling macro**] or .red[**guard macro**].]
+
+---
+
+.left-column[
+## Once-Only Headers
+]
+
+.right-column[
+
+Convention:
+> In a user header file, the macro name should not begin with '\_' . In a system header file, it should begin with '\_\_' to avoid conflicts with user programs.
+
+]
+
+---
+
+.left-column[
+## #import
+]
+
+.right-column[
+#### Alternative to Wrapper #ifndef
+
+> ‘#import’ which includes a file, but does so at most once.
+
+]
+
+.footnote.small[‘#import’ is standard in Objective-C, but is .red[considered a deprecated extension in C and C++.]
+
+It requires users of headers to know that a header can be included only once instead of the other way round.]
+
+---
+
+.left-column[
+## Advantages
+]
+
+.right-column[
+* Including a header has same effect as copy-pasting the contents on top of file that includes it.
+  - If done by hand, it is error prone and laborious
+* Single place to edit and fix
+]
 
 ---
 
