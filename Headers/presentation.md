@@ -206,6 +206,53 @@ int main (void) {
 
 ]
 
+---
+
+## Search Paths
+
+```bash
+$ cpp -v /dev/null -o /dev/null
+```
+
+```bash
+Apple LLVM version 9.0.0 (clang-900.0.39.2)
+Target: x86_64-apple-darwin17.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+ ...
+clang -cc1 version 9.0.0 (clang-900.0.39.2) default target x86_64-apple-darwin17.6.0
+ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/local/include"
+ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/Library/Frameworks"
+
+
+
+#include "..." search starts here:
+
+#include <...> search starts here:
+ /usr/local/include
+ /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include
+ /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
+ /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include
+ /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks (framework directory)
+End of search list.
+
+```
+
+---
+
+.left-column[
+## Search Paths
+]
+
+.right-column[
+To add additional directories use `-I` command line option.
+
+_dir_ to be searched after the current directory (for the quote form of the directive) and ahead of the standard system directories.
+
+Use `-iquote` and `-isystem` instead of `-I` to get separate control over the search paths.
+]
+
+---
 
 ---
 
