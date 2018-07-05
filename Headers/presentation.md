@@ -321,4 +321,17 @@ It requires users of headers to know that a header can be included only once ins
 .right-column[
 * GCC docs - https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html#Header-Files
 * System frameworks - /System/Library/Frameworks/
+
+---
+
+* This presentation is available at https://github.com/ayushgoel/presentations/
+
 ]
+
+---
+
+class: center, middle, inverse
+
+# Thank you!
+
+### Share your feedback
