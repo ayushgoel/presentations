@@ -1,10 +1,6 @@
 class: center, middle, inverse
 
-# Modules
-## &
-# Frameworks
-## &
-# Libraries
+# Frameworks & Libraries
 ### Ayush Goel
 
 ---
