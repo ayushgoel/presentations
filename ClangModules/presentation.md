@@ -82,21 +82,9 @@ class: center, middle, inverse
 ---
 
 .left-column[
-## Modular framework
 ]
 
 .right-column[
-* A modular framework is a framework that contains a module map.
-* for Xcode to generate the module map file, a framework has to have an umbrella header with the same name of the framework and to have the Define Module (DEFINES_MODULE) build settings set to yes.
-
-```
-framework module AFramework {
-  umbrella header "AFramework.h"
-
-  export *
-  module * { export * }
-}
-```
 ]
 
 ---
