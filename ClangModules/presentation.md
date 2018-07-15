@@ -137,8 +137,9 @@ class: center, middle, inverse
 * https://clang.llvm.org/docs/Modules.html
 ]
 
----
+--
 
+.right-column[
 * This presentation is available at https://github.com/ayushgoel/presentations/
 
 ]
