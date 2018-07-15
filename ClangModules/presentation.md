@@ -75,8 +75,6 @@ class: center, middle, inverse
 > Note
 > The automatic mapping of #include to import also solves an implementation problem: importing a module with a definition of some entity (say, a struct Point) and then parsing a header containing another definition of struct Point would cause a redefinition error, even if it is the same struct Point. By mapping #include to import, the compiler can guarantee that it always sees just the already-parsed definition from the module.
 
-While building a module, #include_next is also supported, with one caveat. The usual behavior of #include_next is to search for the specified filename in the list of include paths, starting from the path after the one in which the current file was found. Because files listed in module maps are not found through include paths, a different strategy is used for #include_next directives in such files: the list of include paths is searched for the specified header name, to find the first include path that would refer to the current file. #include_next is interpreted as if the current file had been found in that path. If this search finds a file named by a module map, the #include_next directive is translated into an import, just like for a #include directive.“
-
 ]
 
 .footnote.red[At present, there is no C or C++ syntax for import declarations. Clang will track the modules proposal in the C++ committee.]
