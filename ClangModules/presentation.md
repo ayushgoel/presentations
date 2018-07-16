@@ -11,47 +11,128 @@ class: center, middle, inverse
 
 .right-column[
 * C - include header and link library like `-lLibrary`.
-* Modules provide alternative, aim being
-  - Simple
-  - better compile time scalability
-    - Every time a header is included, it's contents are preprocessed and parsed, **transitively**.
-    - This has to be repeated for every translation unit in your project.
-    - M translation units including N headers require MxN work.
-    - C++ is particularly bad because the compilation model forces much code in headers.
-  - Fragility
-    - #include directives are treated as textual inclusion by the preprocessor, and are therefore subject to any active macro definitions at the time of inclusion.
-    - If any of the active macro definitions happens to collide with a name in the library, it can break the library API or cause compilation failures in the library header itself.
-    - For an extreme example, #define std "The C++ Standard" and then include a standard library header: the result is a horrific cascade of failures in the C++ Standard Library’s implementation.
-    - More subtle real-world problems occur when the headers for two different libraries interact due to macro collisions, and users are forced to reorder #include directives or introduce #undef directives to break the (unintended) dependency.
-  - Conventional workarounds:
-    - C programmers have adopted a number of conventions to work around the fragility of the C preprocessor model.
-    - Include guards, for example, are required for the vast majority of headers to ensure that multiple inclusion doesn’t break the compile. Macro names are written with LONG_PREFIXED_UPPERCASE_IDENTIFIERS to avoid collisions,
-    - and some library/framework developers even use __underscored names in headers to avoid collisions with “normal” names that (by convention) shouldn’t even be macros.
-    - These conventions are a barrier to entry for developers coming from non-C languages, are boilerplate for more experienced developers, and make our headers far uglier than they should be.
-  - Tool Confusion
-    - In a C-based language, it is hard to build tools that work well with software libraries, because the boundaries of the libraries are not clear.
-    - Which headers belong to a particular library, and in what order should those headers be included to guarantee that they compile correctly?
-    - Are the headers C, C++, Objective-C++, or one of the variants of these languages?
-    - What declarations in those headers are actually meant to be part of the API, and what declarations are present only because they had to be written as part of the header file?
-      - Enums for example can not be extern
-* Semantic support
-  - import std.io;
+* Modules provide alternative
+]
+
+---
+
+.left-column[
+## Aim
+]
+
+.right-column[
+1 Simple
+]
+
+---
+
+.left-column[
+## Aim
+]
+
+.right-column[
+2 better compile time scalability
+  - Every time a header is included, it's contents are preprocessed and parsed, **transitively**.
+  - This has to be repeated for every translation unit in your project.
+  - M translation units including N headers require MxN work.
+  - C++ is particularly bad because the compilation model forces much code in headers.
+]
+
+---
+
+.left-column[
+## Aim
+]
+
+.right-column[
+3 Fragility
+
+- `#include` directives are treated as textual inclusion by the preprocessor, and are therefore subject to any active macro definitions at the time of inclusion.
+- If any of the active macro definitions happens to collide with a name in the library, it can break the library API or cause compilation failures in the library header itself.
+- For an extreme example, #define std "The C++ Standard" and then include a standard library header: the result is a horrific cascade of failures in the C++ Standard Library’s implementation.
+- More subtle real-world problems occur when the headers for two different libraries interact due to macro collisions, and users are forced to reorder #include directives or introduce #undef directives to break the (unintended) dependency.
+]
+
+---
+
+.left-column[
+## Aim
+]
+
+.right-column[
+4 Conventional workarounds:
+  - C programmers have adopted a number of conventions to work around the fragility of the C preprocessor model.
+  - Include guards, for example, are required for the vast majority of headers to ensure that multiple inclusion doesn’t break the compile. Macro names are written with LONG_PREFIXED_UPPERCASE_IDENTIFIERS to avoid collisions,
+  - and some library/framework developers even use __underscored names in headers to avoid collisions with “normal” names that (by convention) shouldn’t even be macros.
+  - These conventions are a barrier to entry for developers coming from non-C languages, are boilerplate for more experienced developers, and make our headers far uglier than they should be.
+]
+
+---
+
+.left-column[
+## Aim
+]
+
+.right-column[
+5 Tool Confusion
+  - In a C-based language, it is hard to build tools that work well with software libraries, because the boundaries of the libraries are not clear.
+  - Which headers belong to a particular library, and in what order should those headers be included to guarantee that they compile correctly?
+  - Are the headers C, C++, Objective-C++, or one of the variants of these languages?
+  - What declarations in those headers are actually meant to be part of the API, and what declarations are present only because they had to be written as part of the header file?
+    - Enums for example can not be extern
+]
+
+---
+
+.left-column[
+## Semantic support
+]
+
+.right-column[
+> import std.io;
+
   - loads a binary representation of the std.io module
   - and makes its API available to the application directly
   - Preprocessor definitions that precede the import declaration have no impact on the API provided by std.io,
   - because the module itself was compiled as a separate, standalone module.
+]
 
-  - This semantic import model addresses many of the problems of the preprocessor inclusion model:
-    - Compile-time scalability:
-      - The std.io module is only compiled once, and importing the module into a translation unit is a constant-time operation (independent of module system).
-      - Thus, the API of each software library is only parsed once, reducing the M x N compilation problem to an M + N problem.
-    - Fragility:
-      - Each module is parsed as a standalone entity, so it has a consistent preprocessor environment.
-      - This completely eliminates the need for __underscored names and similarly defensive tricks.
-      - Moreover, the current preprocessor definitions when an import declaration is encountered are ignored, so one software library can not affect how another software library is compiled, eliminating include-order dependencies.
-    - Tool confusion:
-      - Modules describe the API of software libraries, and tools can reason about and present a module as a representation of that API. Because modules can only be built standalone, tools can rely on the module definition to ensure that they get the complete API for the library. Moreover, modules can specify which languages they work with, so, e.g., one can not accidentally attempt to load a C++ module into a C program.
-* Objective-C
+---
+
+.left-column[
+## Semantic support
+### Problems addressed
+]
+
+.right-column[
+- Compile-time scalability:
+  - The std.io module is only compiled once, and importing the module into a translation unit is a constant-time operation (independent of module system).
+  - Thus, the API of each software library is only parsed once, reducing the M x N compilation problem to an M + N problem.
+- Fragility:
+  - Each module is parsed as a standalone entity, so it has a consistent preprocessor environment.
+  - This completely eliminates the need for __underscored names and similarly defensive tricks.
+  - Moreover, the current preprocessor definitions when an import declaration is encountered are ignored, so one software library can not affect how another software library is compiled, eliminating include-order dependencies.
+]
+
+---
+
+.left-column[
+## Semantic support
+### Problems addressed
+]
+
+.right-column[
+- Tool confusion:
+  - Modules describe the API of software libraries, and tools can reason about and present a module as a representation of that API. Because modules can only be built standalone, tools can rely on the module definition to ensure that they get the complete API for the library. Moreover, modules can specify which languages they work with, so, e.g., one can not accidentally attempt to load a C++ module into a C program.
+]
+
+---
+
+.left-column[
+## Objective-C support
+]
+
+.right-column[
   - `@import std;`
     - The @import declaration above imports the entire contents of the std module (which would contain, e.g., the entire C or C++ standard library)
     - and make its API available within the current translation unit.
@@ -59,64 +140,157 @@ class: center, middle, inverse
     `@import std.io;`
   - Redundant import declarations are ignored, and one is free to import modules at any point within the translation unit,
     - so long as the import declaration is at global scope.
-
-* Includes as imports
-  - The primary user-level feature of modules is the import operation, which provides access to the API of software libraries.
-  - However, today’s programs make extensive use of #include, and it is unrealistic to assume that all of this code will change overnight.
-  - modules automatically translate #include directives into the corresponding module import.
-    - For example, the include directive
-    `#include <stdio.h>`
-    will be automatically mapped to an import of the module std.io.
-    - Even with specific import syntax in the language, this particular feature is important for both adoption and backward compatibility:
-    - automatic translation of #include to import allows an application to get the benefits of modules
-    - (for all modules-enabled libraries) without any changes to the application itself.
-    - Thus, users can easily use modules with one compiler while falling back to the preprocessor-inclusion mechanism with other compilers.
-
-> Note
-> The automatic mapping of #include to import also solves an implementation problem: importing a module with a definition of some entity (say, a struct Point) and then parsing a header containing another definition of struct Point would cause a redefinition error, even if it is the same struct Point. By mapping #include to import, the compiler can guarantee that it always sees just the already-parsed definition from the module.
-
 ]
 
-.footnote.red[At present, there is no C or C++ syntax for import declarations. Clang will track the modules proposal in the C++ committee.]
+.footnote.red.small[At present, there is no C or C++ syntax for import declarations. Clang will track the modules proposal in the C++ committee.]
 
 ---
 
 .left-column[
+## Includes as imports
 ]
 
 .right-column[
+- The primary user-level feature of modules is the import operation, which provides access to the API of software libraries.
+- However, today’s programs make extensive use of #include, and it is unrealistic to assume that all of this code will change overnight.
+- modules automatically translate #include directives into the corresponding module import.
+  - For example, the include directive
+  `#include <stdio.h>`
+  will be automatically mapped to an import of the module std.io.
+  - Even with specific import syntax in the language, this particular feature is important for both adoption and backward compatibility:
+  - automatic translation of #include to import allows an application to get the benefits of modules
+  - (for all modules-enabled libraries) without any changes to the application itself.
+  - Thus, users can easily use modules with one compiler while falling back to the preprocessor-inclusion mechanism with other compilers.
 ]
 
 ---
 
 .left-column[
+## Includes as imports
+### Note
 ]
 
 .right-column[
+> The automatic mapping of #include to import also solves an implementation problem: **Redefinition**.
+
+Importing a module with a definition of some entity (say, a struct Point) and then parsing a header containing another definition of struct Point would cause a redefinition error, even if it is the same struct Point. By mapping #include to import, the compiler can guarantee that it always sees just the already-parsed definition from the module.
 ]
 
 ---
 
 .left-column[
+## Module Maps
 ]
 
 .right-column[
+The crucial link between modules and headers is described by a module map, which describes how a collection of existing headers maps on to the (logical) structure of a module.
 ]
 
 ---
 
 .left-column[
+## Module Maps
 ]
 
 .right-column[
+For example, one could imagine a module std covering the C standard library. Each of the C standard library headers (`<stdio.h>`, `<stdlib.h>`, `<math.h>`, etc.) would contribute to the std module, by placing their respective APIs into the corresponding submodule (std.io, std.lib, std.math, etc.).
+Having a list of the headers that are part of the std module allows the compiler to build the std module as a standalone entity, and having the mapping from header names to (sub)modules allows the automatic translation of #include directives to module imports.
+
 ]
 
 ---
 
 .left-column[
+## Module Maps
 ]
 
 .right-column[
+
+Module maps are specified as separate files (each named module.modulemap) alongside the headers they describe, which allows them to be added to existing software libraries without having to change the library headers themselves.
+
+Note
+
+To actually see any benefits from modules, one first has to introduce module maps for the underlying C standard library and the libraries and headers on which it depends.
+
+]
+
+---
+
+.left-column[
+## Compilation model
+]
+
+.right-column[
+The binary representation of modules is automatically generated by the compiler on an as-needed basis. When a module is imported (e.g., by an #include of one of the module’s headers), the compiler will spawn a second instance of itself [in a thread], to parse just the headers in that module. The resulting Abstract Syntax Tree (AST) is then persisted into the binary representation of the module that is then loaded into translation unit where the module import was encountered.
+
+The binary representation of modules is persisted in the module cache. Imports of a module will first query the module cache and, if a binary representation of the required module is already available, will load that representation directly.
+
+Thus, **a module’s headers will only be parsed once per language configuration, rather than once per translation unit that uses the module.**
+
+Modules maintain references to each of the headers that were part of the module build. If any of those headers changes, or if any of the modules on which a module depends change, then the module will be (automatically) recompiled. The process should never require any user intervention.
+]
+
+---
+
+.left-column[
+## Note
+]
+
+.right-column[
+If any submodule of a module is imported into any part of a program, the entire top-level module is considered to be part of the program. As a consequence of this, Clang may diagnose conflicts between an entity declared in an unimported submodule and an entity declared in the current translation unit, and Clang may inline or devirtualize based on knowledge from unimported submodules.
+
+import std.io
+and your translation unit defines in abs(int) // defined in stdlib.h
+will create conflict
+]
+
+---
+
+.left-column[
+## Example
+]
+
+.right-column[
+```
+module std [system] [extern_c] {
+  module assert {
+    textual header "assert.h"
+    header "bits/assert-decls.h"
+    export *
+  }
+
+  module complex {
+    header "complex.h"
+    export *
+  }
+
+  module ctype {
+    header "ctype.h"
+    export *
+  }
+
+  module errno {
+    header "errno.h"
+    header "sys/errno.h"
+    export *
+  }
+
+  // ...more headers follow...
+}
+```
+]
+
+---
+
+.left-column[
+### `export *`
+]
+
+.right-column[
+The wildcard export syntax export * re-exports all of the modules that were imported in the actual header file. Because #include directives are automatically mapped to module imports, export * provides the same transitive-inclusion behavior provided by the C preprocessor, e.g., importing a given module implicitly imports all of the modules on which it depends. Therefore, liberal use of export * provides excellent backward compatibility for programs that rely on transitive inclusion (i.e., all of them).
+
+the `export *` command specifies that anything included by that submodule will be automatically re-exported.
+
 ]
 
 ---
@@ -135,13 +309,7 @@ class: center, middle, inverse
 
 .right-column[
 * https://clang.llvm.org/docs/Modules.html
-]
-
---
-
-.right-column[
 * This presentation is available at https://github.com/ayushgoel/presentations/
-
 ]
 
 ---
@@ -151,3 +319,4 @@ class: center, middle, inverse
 # Thank you!
 
 ### Share your feedback
+#### or open a PR...
