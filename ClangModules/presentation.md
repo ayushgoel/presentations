@@ -99,6 +99,7 @@ We will get to this 🚶‍♂️
 ]
 
 ---
+name: aim-convention
 
 .left-column[
 ## Aim
