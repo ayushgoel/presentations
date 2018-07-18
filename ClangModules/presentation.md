@@ -106,12 +106,52 @@ name: aim-convention
 ]
 
 .right-column[
-4 Conventional workarounds:
-  - C programmers have adopted a number of conventions to work around the fragility of the C preprocessor model.
-  - Include guards, for example, are required for the vast majority of headers to ensure that multiple inclusion doesn’t break the compile. Macro names are written with LONG_PREFIXED_UPPERCASE_IDENTIFIERS to avoid collisions,
-  - and some library/framework developers even use __underscored names in headers to avoid collisions with “normal” names that (by convention) shouldn’t even be macros.
-  - These conventions are a barrier to entry for developers coming from non-C languages, are boilerplate for more experienced developers, and make our headers far uglier than they should be.
+# 4.
+
+## Get rid of workarounds becoming conventions!
+
 ]
+
+???
+* fragility - birth to undesired conventions - raising bar to do development
+  * C programmers have adopted a number of conventions to work around the fragility of the C preprocessor model.
+
+---
+template: aim-convention
+
+.right-column[
+* Include guards
+  ```
+  #ifndef _AFNETWORKING_
+  #define _AFNETWORKING_
+    // do stuff
+  #endif
+  ```
+]
+
+???
+* Multiple inclusion
+* LONG_PREFIXED_UPPERCASE_IDENTIFIERS avoid collision
+  * for example, guards are required for the vast majority of headers to ensure that multiple inclusion doesn’t break the compile. Macro names are written with LONG_PREFIXED_UPPERCASE_IDENTIFIERS to avoid collisions,
+* __UNDERSCORED too to avoid with normal
+
+---
+template: aim-convention
+
+.right-column[
+### Effects
+
+* Superfluous code
+* Entry barrier
+* Ugly code
+]
+
+???
+* macro that shouldn't even be macro
+  * Some library/framework developers even use __underscored names in headers to avoid collisions with “normal” names that (by convention) shouldn’t even be macros.
+* Entry barrier
+* Ugly code
+  * These conventions are a barrier to entry for developers coming from non-C languages, are boilerplate for more experienced developers, and make our headers far uglier than they should be.
 
 ---
 
@@ -120,13 +160,26 @@ name: aim-convention
 ]
 
 .right-column[
-5 Tool Confusion
+# 5.
+
+## Tool Confusion
+
+* boundaries of libraries are not clear
+]
+
+???
+* which headers are for consumption
+* order of include
+* C, C++, Objective-C++ ?
+* What declarations only because they need to be there
+  - Example enums
+
+ --
   - In a C-based language, it is hard to build tools that work well with software libraries, because the boundaries of the libraries are not clear.
   - Which headers belong to a particular library, and in what order should those headers be included to guarantee that they compile correctly?
   - Are the headers C, C++, Objective-C++, or one of the variants of these languages?
   - What declarations in those headers are actually meant to be part of the API, and what declarations are present only because they had to be written as part of the header file?
     - Enums for example can not be extern
-]
 
 ---
 
@@ -136,61 +189,112 @@ name: aim-convention
 
 .right-column[
 > import std.io;
+]
 
-  - loads a binary representation of the std.io module
-  - and makes its API available to the application directly
-  - Preprocessor definitions that precede the import declaration have no impact on the API provided by std.io,
-  - because the module itself was compiled as a separate, standalone module.
+--
+
+.right-column[
+* Load a binary representation of the std.io module
+* Make its API available to the application directly
 ]
 
 ---
+layout: true
 
 .left-column[
 ## Semantic support
 ### Problems addressed
 ]
 
+---
+
 .right-column[
-- Compile-time scalability:
+# 1.
+
+## Compile-time scalability:
+
+> import std.io;
+
+]
+
+???
+
+* compiled only once
+* import O(1)
+* MxN becomes M+N
   - The std.io module is only compiled once, and importing the module into a translation unit is a constant-time operation (independent of module system).
   - Thus, the API of each software library is only parsed once, reducing the M x N compilation problem to an M + N problem.
-- Fragility:
-  - Each module is parsed as a standalone entity, so it has a consistent preprocessor environment.
-  - This completely eliminates the need for __underscored names and similarly defensive tricks.
-  - Moreover, the current preprocessor definitions when an import declaration is encountered are ignored, so one software library can not affect how another software library is compiled, eliminating include-order dependencies.
-]
 
 ---
-
-.left-column[
-## Semantic support
-### Problems addressed
-]
 
 .right-column[
-- Tool confusion:
-  - Modules describe the API of software libraries, and tools can reason about and present a module as a representation of that API. Because modules can only be built standalone, tools can rely on the module definition to ensure that they get the complete API for the library. Moreover, modules can specify which languages they work with, so, e.g., one can not accidentally attempt to load a C++ module into a C program.
+# 2.
+## Fragility
+
+* Macro definitions
+* Guard blocks and defense tricks
 ]
 
+???
+
+* macro defined beforehand no impact
+* library impact another NO
+* Eliminate __UNDERSCORED macros
+* No defense tricks
+  - Each module is parsed as a standalone entity, so it has a consistent preprocessor environment.
+  - Preprocessor definitions that precede the import declaration have no impact on the API provided by std.io because the module was compiled as a separate, standalone module.
+  - This completely eliminates the need for __underscored names and similarly defensive tricks.
+  - Moreover, the current preprocessor definitions when an import declaration is encountered are ignored, so one software library can not affect how another software library is compiled, eliminating include-order dependencies.
+
 ---
+
+.right-column[
+# 3.
+## Tool confusion
+
+* Better API to reason
+* Describe language - C, C++ etc (no accidents)
+
+]
+
+???
+- Modules describe the API of software libraries, and tools can reason about and present a module as a representation of that API. Because modules can only be built standalone, tools can rely on the module definition to ensure that they get the complete API for the library. Moreover, modules can specify which languages they work with, so, e.g., one can not accidentally attempt to load a C++ module into a C program.
+
+---
+
+layout: true
 
 .left-column[
 ## Objective-C support
 ]
 
+---
+
 .right-column[
-  - `@import std;`
-    - The @import declaration above imports the entire contents of the std module (which would contain, e.g., the entire C or C++ standard library)
-    - and make its API available within the current translation unit.
-  - To import only part of a module, one may use dot syntax to specific a particular submodule, e.g.,
-    `@import std.io;`
-  - Redundant import declarations are ignored, and one is free to import modules at any point within the translation unit,
-    - so long as the import declaration is at global scope.
+> `@import std;`
+
+* Imports the entire std module
+  * (which would contain, e.g., the entire C or C++ standard library)
+* Makes API available within the current translation unit.
+
+
+* Use dot syntax to use particular submodule, e.g.,
+
+> `@import std.io;`
+]
+
+---
+
+.right-column[
+Notes:
+* Redundant import declarations are ignored.
+* Import anytime at global scope
 ]
 
 .footnote.red.small[At present, there is no C or C++ syntax for import declarations. Clang will track the modules proposal in the C++ committee.]
 
 ---
+layout: false
 
 .left-column[
 ## Includes as imports
@@ -337,14 +441,6 @@ The wildcard export syntax export * re-exports all of the modules that were impo
 
 the `export *` command specifies that anything included by that submodule will be automatically re-exported.
 
-]
-
----
-
-.left-column[
-]
-
-.right-column[
 ]
 
 ---
