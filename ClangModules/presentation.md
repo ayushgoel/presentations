@@ -11,7 +11,12 @@ class: center, middle, inverse
 
 .right-column[
 * C - include header and link library like `-lLibrary`.
-* Modules provide alternative
+]
+
+--
+
+.right-column[
+* **Modules provide alternative**
 ]
 
 ---
@@ -21,7 +26,11 @@ class: center, middle, inverse
 ]
 
 .right-column[
-1 Simple
+# 1.
+
+## Simple
+
+We will get to this 🚶‍♂️
 ]
 
 ---
@@ -31,11 +40,22 @@ class: center, middle, inverse
 ]
 
 .right-column[
-2 better compile time scalability
-  - Every time a header is included, it's contents are preprocessed and parsed, **transitively**.
-  - This has to be repeated for every translation unit in your project.
-  - M translation units including N headers require MxN work.
-  - C++ is particularly bad because the compilation model forces much code in headers.
+# 2.
+
+## Better compile time scalability
+]
+
+???
+* Every time a header is included, it's contents are preprocessed and parsed, **transitively**.
+* This has to be repeated for every translation unit in your project.
+
+--
+.right-column[
+* M translation units including N headers require MxN work.
+]
+--
+.right-column[
+* C++ is particularly bad because the compilation model forces much code in headers. (**Wat?**)
 ]
 
 ---
@@ -45,12 +65,37 @@ class: center, middle, inverse
 ]
 
 .right-column[
-3 Fragility
+# 3.
 
-- `#include` directives are treated as textual inclusion by the preprocessor, and are therefore subject to any active macro definitions at the time of inclusion.
-- If any of the active macro definitions happens to collide with a name in the library, it can break the library API or cause compilation failures in the library header itself.
-- For an extreme example, #define std "The C++ Standard" and then include a standard library header: the result is a horrific cascade of failures in the C++ Standard Library’s implementation.
-- More subtle real-world problems occur when the headers for two different libraries interact due to macro collisions, and users are forced to reorder #include directives or introduce #undef directives to break the (unintended) dependency.
+## Fragility
+
+* Macro definitions
+]
+
+???
+
+- textual inclusion - preprocessor - active macro definitions impact includes
+  - include directives are treated as textual inclusion by the preprocessor, and are therefore subject to any active macro definitions at the time of inclusion.
+- can break library API - compilation failure
+  - If any of the active macro definitions happens to collide with a name in the library, it can break the library API or cause compilation failures in the library header itself.
+
+--
+
+.right-column[
+* For an extreme example, #define std "The C++ Standard" and then include a standard library header.
+]
+
+???
+
+* macro collision
+  * When the headers for two different libraries interact due to macro collisions
+
+--
+
+.right-column[
+* Users solve this via:
+  * reorder #include directives
+  * introduce #undef directives
 ]
 
 ---
