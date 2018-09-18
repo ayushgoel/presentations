@@ -27,16 +27,11 @@ class: center, middle, inverse
 .right-column[
 ## 1.
 
-System header files declare the interfaces to parts of the operating system.
+> System header files
+
+declare the interfaces to parts of the operating system.
 Eg - stdio, string, stdlib etc
 
-Check
-
-```
-/Applications/Xcode.app/Contents/Developer/Platforms/
-MacOSX.platform/Developer/SDKs/
-MacOSX10.13.sdk/usr/include/
-```
 ]
 
 ---
@@ -48,17 +43,14 @@ MacOSX10.13.sdk/usr/include/
 .right-column[
 ## 2.
 
-Your own header files contain declarations for interfaces between the source files of your program.
+> Your own header files
+
+contain declarations for interfaces between the source files of your program.
 Eg - TDTSessionManager, TDTAppDelegate etc
-
-Check
-
-```
-Where ever you have put your Flock project
-```
 ]
 
 ---
+layout:true
 
 .left-column[
 ## Syntax
@@ -67,18 +59,29 @@ Where ever you have put your Flock project
 .right-column[
 ### `<file.h>` vs. `"file.h"`
 ]
---
+
+---
 
 .right-column[
-* `#include <file.h>`
-  - This variant is used for system header files
-  - It searches for a file named file in a standard list of system directories
-* `#include "file.h"`
-  - This variant is used for header files of your own program.
-  - It searches for a file named file first in the directory containing the current file, then in the quote directories and then the same directories used for <file>
+#### Angled brackets
+
+* Used for system header files
+* Searches in a standard list of system directories
 ]
 
 ---
+
+.right-column[
+#### Quotes
+- This variant is used for header files of your own program.
+- It searches:
+  - first in the directory containing the current file
+  - quote directories
+  - same directories used for <file>
+]
+
+---
+layout: false
 
 .left-column[
 ## Include operation
@@ -86,14 +89,14 @@ Where ever you have put your Flock project
 
 .right-column[
 
-> Works by directing the C preprocessor to
-> * scan the specified file as input
-> * before continuing with the rest of the current file.
->
-> The output from the preprocessor contains
-> * the output already generated, followed by
-> * the output resulting from the included file, followed by
-> * the output that comes from the text after the ‘#include’ directive.
+* C preprocessor scans the file as input
+* Output:
+
+```
+output already generated
+output resulting from the included file
+output that comes from the text after the ‘#include’ directive
+```
 
 ]
 
